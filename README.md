@@ -1,2 +1,2 @@
 # TF2-Jailbreak-Fixes
-My TF2 Jailbreak plugin fixes
+This is only a "recopilation" of my fixes for TF2 Jailbreak Plugin
