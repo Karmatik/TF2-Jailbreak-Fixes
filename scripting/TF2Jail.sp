@@ -1655,7 +1655,8 @@ public void OnPlayerDeath(Handle hEvent, char[] sName, bool bBroadcast)
 		if (IsWarden(client))
 		{
 			WardenUnset(client);
-			PrintCenterTextAll("%t", "warden killed", client);
+			PrintCenterTextAll("warden has died");
+			
 		}
 
 		if (cv_Freekillers && Client_IsIngame(client_killer) && client != client_killer)
@@ -2071,7 +2072,7 @@ public void OnArenaRoundStart(Handle event, const char[] name, bool bDontBroadca
 
 	if (cv_WardenAuto && cv_RandomWardenTimer > 0)
 	{
-		CPrintToChatAll("%t %t", "plugin tag", "a new warden is begin searched", cv_RandomWardenTimer);
+		CPrintToChatAll("%t %t", "plugin tag", "finding random warden", cv_RandomWardenTimer);
 		CreateTimer(float(cv_RandomWardenTimer), FindRandomWardenTimer, _, TIMER_FLAG_NO_MAPCHANGE);
 	}
 }
@@ -2441,7 +2442,7 @@ public Action Command_OpenCells(int client, int args)
 	}
 
 	DoorHandler(OPEN);
-	Jail_Log(false, "%N has opened the cell doors.", client);
+	Jail_Log(false, "%N has opened the cell doors using door controls as Warden.", client);
 
 	return Plugin_Handled;
 }
@@ -2546,8 +2547,7 @@ public Action Command_EnableCollisions(int client, int args)
 
 	if (!IsWarden(client))
 	{
-		CPrintToChat(client, "%t %t", "
-		", "not warden");
+		CPrintToChat(client, "%t %t", "plugin tag", "not warden");
 		return Plugin_Handled;
 	}
 
@@ -6240,7 +6240,7 @@ public int Native_IsFreeday(Handle plugin, int numParams)
 	int client = GetNativeCell(1);
 	if (client < 1 || client > MaxClients || !Client_IsIngame(client))
 	{
-		return Plugin_Handled;
+		return ThrowNativeError(SP_ERROR_INDEX, "Client index %i is invalid", client);
 	}
 
 	return view_as<bool>(bIsQueuedFreeday[client] || bIsFreeday[client]);
@@ -6293,7 +6293,7 @@ public int Native_RemoveFreeday(Handle plugin, int numParams)
 	int client = GetNativeCell(1);
 	if (client < 1 || client > MaxClients || !Client_IsIngame(client))
 	{
-		return Plugin_Handled;
+		return ThrowNativeError(SP_ERROR_INDEX, "Client index %i is invalid", client);
 	}
 
 	if (!bIsFreeday[client])
