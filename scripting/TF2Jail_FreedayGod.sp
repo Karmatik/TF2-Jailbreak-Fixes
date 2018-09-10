@@ -22,8 +22,10 @@ public Action:OnTakeDamage(client, &attacker, &inflictor, &Float:damage, &damage
 {
 	if (TF2Jail_IsFreeday(client))
 	{
-		damage = 0;
+		damage = 0.0;
 		return Plugin_Changed;
+	} else {
+		return Plugin_Continue;
 	}
 	
 	if (TF2Jail_IsFreeday(attacker))
